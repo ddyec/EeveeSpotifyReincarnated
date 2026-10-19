@@ -38,11 +38,15 @@ by an older appearance/configuration profile. Existing account/login data is kep
    before spotifyglass so Chroma sees the raw lyrics key during initialization.
    Validate this load order in the final Mach-O; if it cannot be established,
    stop before distributing a combined IPA. The key alone is not proof of
-   load-order compatibility. This second-stage workflow is not implemented here.
+   load-order compatibility. The second-stage workflow is in `ddyec/spoti.pw`,
+   branch `feat/ev1-official-beta-pipeline-20261019`; it establishes a strong
+   dependency from spotifyglass to EEVEE and checks preserved resources.
 
-The currently supplied version number is 9.1.88. EEVEE documents 9.1.88; the
-official Chroma kit lists 9.1.90 and 9.1.78 only. A 9.1.88 combined build remains
-experimental; do not report it as supported or runtime-verified.
+The user supplied vanilla 9.1.88 and 9.1.90 plus an already patched 9.1.78.
+This pipeline uses vanilla 9.1.90, which the official Chroma kit supports. EEVEE
+documents 9.1.88 and selects the same hook family for 9.1.x; compilation and
+packaging on 9.1.90 do not establish phone compatibility. Keep 9.1.88 for an
+EEVEE-only comparison and do not double-patch the supplied 9.1.78.
 
 ## Acceptance
 
