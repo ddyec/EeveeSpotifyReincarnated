@@ -34,15 +34,7 @@ func modifyRemoteConfiguration(_ configuration: inout UcsResponse) {
 }
 
 private let propertyReplacements = [
-    // Append when the account's config omits them, so they work without overwrite-configuration.
-    EeveePropertyReplacement(name: "crossfade_enabled", scope: "ios-feature-settings", modification: .forceBool(true)),
-    EeveePropertyReplacement(name: "automix_enabled", scope: "ios-feature-settings", modification: .forceBool(true)),
-
-    // ios featue only draws the row, the player core gates the fade on its own scope
-    EeveePropertyReplacement(name: "crossfade_enabled", scope: "core-playback-setup", modification: .forceBool(true)),
-
-    EeveePropertyReplacement(name: "use_playback_settings_crossfade", scope: "ios-feature-settings", modification: .forceBool(false)),
-    EeveePropertyReplacement(name: "use_playback_settings_gapless", scope: "ios-feature-settings", modification: .forceBool(false)),
+    // EV1 leaves playback appearance/features to Spotify and spoti.pw.
 
     // capping
     EeveePropertyReplacement(name: "enable_common_capping", modification: .remove),
@@ -362,32 +354,6 @@ private let propertyReplacements = [
     EeveePropertyReplacement(name: "enable_video_ads_player_v2", modification: .setBool(false)),
     EeveePropertyReplacement(name: "enable_sponsored_search_results_v2", modification: .setBool(false)),
     EeveePropertyReplacement(name: "enable_sponsored_home_results_v2", modification: .setBool(false)),
-
-    // 😡😡😡 spotify, stop changing the scroll logic
-    EeveePropertyReplacement(name: "should_nova_scroll_use_scrollsita", modification: .remove),
-
-    // ─────────────────────────────────────────────────────────────────────
-    // Lyrics share button — Spotify gates this behind a remote-config flag
-    // that is only enabled for premium accounts. Force it on so the share
-    // button works even when overwrite-configuration is disabled.
-    // ─────────────────────────────────────────────────────────────────────
-    EeveePropertyReplacement(name: "enable_lyrics_share", scope: "ios-feature-lyrics", modification: .forceBool(true)),
-    EeveePropertyReplacement(name: "lyrics_share_enabled", scope: "ios-feature-lyrics", modification: .forceBool(true)),
-    EeveePropertyReplacement(name: "enable_lyrics_sharing", scope: "ios-feature-lyrics", modification: .forceBool(true)),
-    EeveePropertyReplacement(name: "is_lyrics_share_enabled", scope: "ios-feature-lyrics", modification: .forceBool(true)),
-    EeveePropertyReplacement(name: "lyrics_shareable", scope: "ios-feature-lyrics", modification: .forceBool(true)),
-    EeveePropertyReplacement(name: "enable_share_link_preview_uploads", scope:"ios-feature-lyrics", 
-    modification: .forceBool(true)),
-    EeveePropertyReplacement(name: "enable_sharing_v2", scope: "ios-feature-lyrics", 
-    modification: .forceBool(true)),
-    // Also patch without scope in case flag is top-level / un-scoped
-    EeveePropertyReplacement(name: "enable_lyrics_share", modification: .forceBool(true)),
-    EeveePropertyReplacement(name: "lyrics_share_enabled", modification: .forceBool(true)),
-    EeveePropertyReplacement(name: "enable_lyrics_sharing", modification: .forceBool(true)),
-    EeveePropertyReplacement(name: "is_lyrics_share_enabled", modification: .forceBool(true)),
-    EeveePropertyReplacement(name: "lyrics_shareable", modification: .forceBool(true)),
-    EeveePropertyReplacement(name: "enable_share_link_preview_uploads", modification: .forceBool(true)),
-    EeveePropertyReplacement(name: "enable_sharing_v2", modification: .forceBool(true))
 ]
 
 private func modifyAssignedValues(_ values: inout [AssignedValue]) {

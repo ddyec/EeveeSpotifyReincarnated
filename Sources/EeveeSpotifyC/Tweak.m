@@ -54,6 +54,10 @@ __attribute__((constructor)) static void init() {
     @try {
         NSLog(@"[EeveeSpotify] Initializing tweak...");
 
+        // Chroma reads this raw NSUserDefaults key instead of our Swift getter.
+        // The second-stage packager must load EEVEE before spotifyglass.
+        [NSUserDefaults.standardUserDefaults setInteger:4 forKey:@"lyricsSource"];
+
         // Initialize Orion - do not remove this line.
         orion_init();
 

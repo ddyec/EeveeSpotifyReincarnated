@@ -4,15 +4,11 @@ extension UserDefaults {
     private static let lyricsSourceKey = "lyricsSource"
     
     static var lyricsSource: LyricsSource {
-        get {
-            if let rawValue = container.object(forKey: lyricsSourceKey) as? Int {
-                return LyricsSource(rawValue: rawValue) ?? .defaultSource
-            }
-
-            return LyricsSource.defaultSource
-        }
-        set (newSource) {
-            container.set(newSource.rawValue, forKey: lyricsSourceKey)
+        get { .notReplaced }
+        set {
+            // Dedicated companion build: a stale UI or imported preference must
+            // never enable a second lyrics engine.
+            container.set(LyricsSource.notReplaced.rawValue, forKey: lyricsSourceKey)
         }
     }
 }

@@ -3,7 +3,6 @@ import UIKit
 
 struct EeveePatchingSettingsView: View {
     @State var patchType = UserDefaults.patchType
-    @State var overwriteConfiguration = UserDefaults.overwriteConfiguration
     @State var trueShuffleEnabled = UserDefaults.trueShuffleEnabled
 
     var body: some View {
@@ -30,25 +29,11 @@ struct EeveePatchingSettingsView: View {
                 OfflineHelper.resetData()
             }
             
-            .onChange(of: overwriteConfiguration) { overwriteConfiguration in
-                UserDefaults.overwriteConfiguration = overwriteConfiguration
-                OfflineHelper.resetData()
-            }
-
             .onChange(of: trueShuffleEnabled) { isEnabled in
                 UserDefaults.trueShuffleEnabled = isEnabled
             }
 
             if patchType == .requests {
-                Section(
-                    footer: Text("overwrite_configuration_description".localized)
-                ) {
-                    Toggle(
-                        "overwrite_configuration".localized,
-                        isOn: $overwriteConfiguration
-                    )
-                }
-
                 Section(
                     footer: Text(
                         "true_shuffle_dec".localized

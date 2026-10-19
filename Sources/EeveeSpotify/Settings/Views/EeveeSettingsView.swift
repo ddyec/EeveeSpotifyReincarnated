@@ -44,21 +44,13 @@ struct EeveeSettingsView: View {
         }
     }
 
+    // EV1 keeps only settings for services retained in this build.
     private static let groups: [SettingsGroup] = [
         SettingsGroup(key: "settings_group_listening", entries: [
             SettingsEntry(key: "patching", icon: "hammer.fill", color: .orange) { AnyView(EeveePatchingSettingsView()) },
-            SettingsEntry(key: "lyrics", icon: "quote.bubble.fill", color: .blue) { AnyView(EeveeLyricsSettingsView()) },
             SettingsEntry(key: "sponsorblock", icon: "forward.end.fill", color: .red) { AnyView(SponsorBlockSettingsView()) },
         ]),
-        SettingsGroup(key: "settings_group_looks", entries: [
-            SettingsEntry(key: "appearance", icon: "drop.fill", color: Color(hex: "#30B0C7")) { AnyView(AppearanceSettingsView()) },
-            SettingsEntry(key: "customization", icon: "paintpalette.fill", color: Color(hex: "#64D2FF")) { AnyView(EeveeUISettingsView()) },
-            SettingsEntry(key: "appIcon", icon: "app.badge.fill", color: .pink) { AnyView(EeveeAppIconPickerView()) },
-        ]),
         SettingsGroup(key: "settings_group_advanced", entries: [
-            SettingsEntry(key: "spotify_features", icon: "switch.2", color: .green) { AnyView(SpotifyFeaturesView()) },
-            SettingsEntry(key: "flags", icon: "flag.fill", color: Color(hex: "#5E5CE6")) { AnyView(FlagBrowserView()) },
-            SettingsEntry(key: "experiments", icon: "sparkle", color: .purple) { AnyView(EeveeExperimentsSettingsView()) },
             SettingsEntry(key: "miscellaneous", icon: "ellipsis.circle.fill", color: .gray) { AnyView(EeveeMiscellaneousSettingsView()) },
         ]),
     ]

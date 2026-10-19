@@ -13,7 +13,7 @@ extension UserDefaults {
     private static let lyricsOptionsKey = "lyricsOptions"
     private static let hasShownCommonIssuesTipKey = "hasShownCommonIssuesTip"
     private static let hasPatchedBootstrapKey = "eeveeHasPatchedBootstrap"
-    private static let cachedCustomizeDataKey = "eeveeCachedCustomizeData"
+    private static let cachedCustomizeDataKey = "eeveeEV1CachedCustomizeData"
     private static let iconNamePrettifyKey = "iconNamePrettify"
     private static let cleanShareLinksKey = "cleanShareLinks"
 
@@ -70,7 +70,8 @@ extension UserDefaults {
     
     static var overwriteConfiguration: Bool {
         get {
-            container.bool(forKey: overwriteConfigurationKey)
+            // Preserve Spotify/chroma feature assignments, even after an upgrade.
+            false
         }
         set (overwriteConfiguration) {
             container.set(overwriteConfiguration, forKey: overwriteConfigurationKey)

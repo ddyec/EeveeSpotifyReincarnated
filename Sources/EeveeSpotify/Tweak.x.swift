@@ -186,7 +186,7 @@ func eeveeEnvFlag(_ name: String) -> Bool {
 
 struct EeveeSpotify: Tweak {
     static let version = "7.0.0"
-    static let buildNumber = "1"
+    static let buildNumber = "EV1.1"
     static let spotifyVersion = Bundle.main.object(forInfoDictionaryKey: "CFBundleShortVersionString") as? String ?? "?"
     static let repoSlug = GeneratedConfig.repoSlug
     
@@ -229,21 +229,9 @@ struct EeveeSpotify: Tweak {
         // Local-only premium force; independent of patching, so premium UI survives everything else being off.
         activateEeveePremiumForce()
 
-        activateTelemetryBlock()
-        activateTheme()
-        activateLiquidGlass()
-        activatePlayerGestures()
-        activatePlayerHaptics()
-        activateHomeDeclutter()
-        activateGlassCustomTabs()
-        activateHomeGradient()
-        activateArtistHides()
-        activatePlaylistHides()
-        HideJam.activate()
-        activateRemoteFlags()
+        // EV1: keep unique services; spoti.pw owns appearance, lyrics and flags.
         activateRatingPromptBlock()
 
-        activateEeveeCrossfadeForce()
         activateEeveeAdBlockerExtended()
         activateUpsellPopupBlocker()
         activateUpsellServiceBlocker()
@@ -315,37 +303,7 @@ struct EeveeSpotify: Tweak {
                 activateV91ServerSidedReminderIfAvailable()
             }
 
-            let lyricsEnabled = UserDefaults.lyricsSource.isReplacingLyrics
-
-            if lyricsEnabled {
-                let fullscreenOK: Bool = {
-                    if let cls = NSClassFromString("Lyrics_FullscreenElementPageImpl.FullscreenElementViewController") {
-                        return class_getInstanceMethod(cls, #selector(UIViewController.viewDidLoad)) != nil
-                    }
-                    return false
-                }()
-
-                let npvOK: Bool = {
-                    if let cls = NSClassFromString("NowPlaying_ScrollImpl.NPVScrollViewController") {
-                        return class_getInstanceMethod(cls, #selector(UIViewController.viewWillAppear(_:))) != nil
-                            && class_getInstanceMethod(cls, #selector(UIViewController.viewWillDisappear(_:))) != nil
-                    }
-                    return false
-                }()
-
-                if fullscreenOK {
-                    BaseLyricsGroup().activate()
-                } else {
-                    writeDebugLog("[INIT] Skipped BaseLyricsGroup (fullscreen VC missing)")
-                }
-
-                if npvOK {
-                    V91LyricsGroup().activate()
-                } else {
-                    writeDebugLog("[INIT] Skipped V91LyricsGroup (NPVScrollViewController missing)")
-                }
-
-            }
+            // EV1: lyrics and their UI belong to spoti.pw.
 
             if let cls = NSClassFromString("ProfileSettingsSection"),
                class_getInstanceMethod(cls, Selector(("numberOfRows"))) != nil,
@@ -378,7 +336,6 @@ struct EeveeSpotify: Tweak {
             TrueShuffleHook.install()
             activateEeveeProbes()
             activateSponsorBlock()
-            activateKaraokeHooks()
             return
         }
 
@@ -386,24 +343,8 @@ struct EeveeSpotify: Tweak {
             InstgramDestinationGroup().activate()
         }
         
-        if UserDefaults.darkPopUps {
-            DarkPopUps().activate()
-        }
-        
         if UserDefaults.patchType.isPatching {
             activatePremiumPatchingGroup()
-        }
-        
-        if UserDefaults.lyricsSource.isReplacingLyrics {
-            BaseLyricsGroup().activate()
-            LyricsErrorHandlingGroup().activate()
-            
-            if EeveeSpotify.hookTarget == .latest {
-                ModernLyricsGroup().activate()
-            }
-            else {
-                LegacyLyricsGroup().activate()
-            }
         }
         
         UniversalSettingsIntegrationProfileGroup().activate()
@@ -419,6 +360,5 @@ struct EeveeSpotify: Tweak {
 
         activateEeveeProbes()
         activateSponsorBlock()
-        activateKaraokeHooks()
     }
 }
