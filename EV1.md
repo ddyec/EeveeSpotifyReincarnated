@@ -51,6 +51,10 @@ EEVEE-only comparison and do not double-patch the supplied 9.1.78.
 ## Acceptance
 
 The Windows source audit is `python Tests/EV1Companion/test_source.py`.
+The first full compile found an upstream invalid UITextView RTL property
+assignment in `CustomLyrics+RTL.x.swift`. That unused lyrics hook is removed from
+EV1; the companion does not render lyrics. Alternate app-icon registration is
+also skipped by the EV1 IPA workflow.
 The Action also compiles the real lyrics-source enum/getter with a Foundation
 regression before compiling the tweak. A passing build does not establish phone
 behavior. First install EV1 alone and check stock appearance, playback/login and

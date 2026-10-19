@@ -81,7 +81,7 @@ jobs:
         env:
           REPO_SLUG: ${{ github.repository }}
         run: |
-          THEOS_PACKAGE_SCHEME=rootless make package FINALPACKAGE=1
+          THEOS_PACKAGE_SCHEME=rootless make -j3 package FINALPACKAGE=1
           DEB_PATH=$(find packages -name "com.eevee.spotify_*.deb" | head -1)
           [ -n "$DEB_PATH" ] || { echo "deb not produced" >&2; exit 1; }
           echo "DEB_PATH=$DEB_PATH"   >> $GITHUB_ENV
@@ -191,12 +191,6 @@ jobs:
           zip -qry "$(basename "$OUT_IPA")" Payload
           rm -rf Payload
           
-      - name: Stage alternate app icons
-        if: ${{ inputs.ipa_url != '' }}
-        run: |
-          chmod +x Tools/alt-icons.sh
-          Tools/alt-icons.sh "$OUT_IPA"
-
       - name: Upload IPA artifact
         if: ${{ inputs.ipa_url != '' && (inputs.upload_method == 'artifacts' || inputs.upload_method == 'both') }}
         uses: actions/upload-artifact@v4
