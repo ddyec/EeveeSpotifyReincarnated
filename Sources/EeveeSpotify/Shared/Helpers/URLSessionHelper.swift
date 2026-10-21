@@ -1,4 +1,4 @@
-import UIKit
+import Foundation
 
 class URLSessionHelper {
     static let shared = URLSessionHelper()
@@ -36,9 +36,9 @@ class URLSessionHelper {
     func setOrAppend(_ data: Data, for task: URLSessionTask) {
         let key = ObjectIdentifier(task)
         queue.sync {
-            var loadedData = requestsMap[key] ?? Data()
-            loadedData.append(data)
-            requestsMap[key] = loadedData
+            // Mutate the dictionary value in place. Copying it out keeps the original Data alive
+            // during append, forcing a copy of the whole accumulated response for each chunk.
+            requestsMap[key, default: Data()].append(data)
         }
     }
 

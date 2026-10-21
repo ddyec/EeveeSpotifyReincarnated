@@ -1,0 +1,24 @@
+name: Companion repeated-operation checks
+on:
+  push:
+    branches: [feat/performance-companion-20261021]
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  check:
+    runs-on: macos-15-intel
+    steps:
+      - uses: actions/checkout@v5
+      - name: Audit inactive overlapping hooks
+        run: python3 Tests/EV1Companion/test_source.py
+      - name: Check real response buffering
+        run: |
+          swiftc Sources/EeveeSpotify/Shared/Helpers/URLSessionHelper.swift Tests/URLSessionBuffer/main.swift -o "$RUNNER_TEMP/buffer-tests"
+          "$RUNNER_TEMP/buffer-tests"
+      - name: Check stale lyric preferences
+        run: |
+          swiftc Sources/EeveeSpotify/Lyrics/Models/Settings/LyricsSource.swift \
+            Sources/EeveeSpotify/Lyrics/Models/Settings/LyricsSource+UserDefaults.swift \
+            Tests/EV1Companion/main.swift -o "$RUNNER_TEMP/companion-tests"
+          "$RUNNER_TEMP/companion-tests"

@@ -186,7 +186,7 @@ func eeveeEnvFlag(_ name: String) -> Bool {
 
 struct EeveeSpotify: Tweak {
     static let version = "7.0.0"
-    static let buildNumber = "EV1.1"
+    static let buildNumber = "EV1-performance-2"
     static let spotifyVersion = Bundle.main.object(forInfoDictionaryKey: "CFBundleShortVersionString") as? String ?? "?"
     static let repoSlug = GeneratedConfig.repoSlug
     
@@ -334,7 +334,6 @@ struct EeveeSpotify: Tweak {
             }
             eeveeLog("[EeveeSpotify] Initialization complete for 9.1.x")
             TrueShuffleHook.install()
-            activateEeveeProbes()
             activateSponsorBlock()
             return
         }
@@ -358,7 +357,6 @@ struct EeveeSpotify: Tweak {
         UniversalSettingsIntegrationNavGroup().activate()
         SettingsIntegrationGroup().activate()
 
-        activateEeveeProbes()
         activateSponsorBlock()
     }
 }

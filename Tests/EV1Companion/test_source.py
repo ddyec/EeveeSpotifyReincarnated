@@ -10,7 +10,8 @@ for call in (
     'activatePlayerHaptics', 'activateHomeDeclutter', 'activateGlassCustomTabs',
     'activateHomeGradient', 'activateArtistHides', 'activatePlaylistHides',
     'activateRemoteFlags', 'activateTelemetryBlock', 'activateEeveeCrossfadeForce',
-    'activateKaraokeHooks',
+    'activateKaraokeHooks', 'activatePlayerDeclutter', 'activateRoundedArtwork',
+    'activateEeveeProbes',
 ):
     assert not re.search(r'\b' + call + r'\s*\(', tweak), call
 for group in ('BaseLyricsGroup', 'V91LyricsGroup', 'ModernLyricsGroup',
@@ -47,4 +48,15 @@ assert 'name: "automix_enabled"' not in config
 assert 'name: "crossfade_enabled"' not in config
 ctor = (root / 'Sources/EeveeSpotifyC/Tweak.m').read_text(encoding='utf-8')
 assert ctor.index('setInteger:4 forKey:@"lyricsSource"') < ctor.index('        orion_init();')
+# Capturing lyric/player objects must not sneak into retained Premium groups on older versions.
+capture = (src / 'Lyrics/NowPlayingScrollViewControllerInstanceHook.x.swift').read_text(encoding='utf-8')
+assert 'typealias Group = IOS14PremiumPatchingGroup' not in capture
+assert 'typealias Group = NonIOS14PremiumPatchingGroup' not in capture
+# Every overlapping Orion hook must have an explicit group. DefaultGroup activates before Tweak.init.
+for folder in ('Lyrics', 'Karaoke', 'LiquidGlass', 'Pages', 'Player', 'Privacy', 'Flags'):
+    for path in (src / folder).rglob('*.x.swift'):
+        text = path.read_text(encoding='utf-8')
+        for match in re.finditer(r'class\s+(\w+)\s*:\s*ClassHook<[^\n]+\{', text):
+            body = text[match.end():text.find('\n}', match.end())]
+            assert re.search(r'typealias\s+Group\s*=', body), (path, match[1], 'default group')
 print('PASS: EV1 appearance, lyrics delegates, stale configuration and retained services')
