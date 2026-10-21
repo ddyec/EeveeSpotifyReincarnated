@@ -48,8 +48,6 @@ assert 'name: "automix_enabled"' not in config
 assert 'name: "crossfade_enabled"' not in config
 ctor = (root / 'Sources/EeveeSpotifyC/Tweak.m').read_text(encoding='utf-8')
 assert ctor.index('setInteger:4 forKey:@"lyricsSource"') < ctor.index('        orion_init();')
-assert 'EeveeSpotiCompanionProfile(void)' in ctor
-assert 'return "EV1-performance-2"' in ctor
 # Capturing lyric/player objects must not sneak into retained Premium groups on older versions.
 capture = (src / 'Lyrics/NowPlayingScrollViewControllerInstanceHook.x.swift').read_text(encoding='utf-8')
 assert 'typealias Group = IOS14PremiumPatchingGroup' not in capture

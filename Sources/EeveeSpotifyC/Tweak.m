@@ -50,11 +50,6 @@ static void writeDebugLog(NSString *message) {
     }
 }
 
-// Exported for spoti.pw's live compatibility check. Never infer this from old preferences.
-__attribute__((visibility("default"))) const char *EeveeSpotiCompanionProfile(void) {
-    return "EV1-performance-2";
-}
-
 __attribute__((constructor)) static void init() {
     @try {
         NSLog(@"[EeveeSpotify] Initializing tweak...");

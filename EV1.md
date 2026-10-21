@@ -2,13 +2,11 @@
 
 Based on SideloadLabs upstream Master, c211189324145d20a032eabc83f886ff8b38798d.
 The performance companion identifies its package as 7.0.0+ev1.2 and its build as
-EV1-performance-2. It exports `EeveeSpotiCompanionProfile()` so spoti.pw can identify
-the running companion without trusting stale imported preferences.
+EV1-performance-2.
 
-The 2026-10-21 performance branch pairs this companion with the user's custom
-9.1.78 source branch in spoti.pw, preserving its QQ/KuGou and preview fixes. Its
-`performance-companion.yml` replaces the historical official-kit build order
-below for this source-based performance build. The clean input is release 22's
+The 2026-10-21 performance branch audits repeated runtime work alongside the
+user's custom 9.1.78 source branch in spoti.pw, preserving its QQ/KuGou and preview
+fixes. It does not add a new IPA patching chain. The inspected clean input is release 22's
 `com.spotify.client_9.1.78_und3fined.2.ipa` (SHA-256
 `dc1706972885217081b3a9debcf07e3a5762a5d59ef5873aa2533ebd8bd719b5`).
 
@@ -23,6 +21,10 @@ player capture hooks have also been removed from retained Premium groups, so
 older-version paths cannot enable them accidentally. General-purpose runtime
 probes are no longer activated; diagnostics belong to spoti.pw. The regression
 checks these ownership boundaries on every companion build.
+The response buffer now appends through the dictionary's in-place accessor,
+avoiding repeated copy-on-write of the already accumulated body on every chunk.
+`Tests/URLSessionBuffer/main.swift` checks real helper behavior for interleaved
+tasks at the same URL, chunk ordering, single consumption and cancellation.
 
 EV1 retains EEVEE's core playback/account response handling, ad and upsell
 filtering, session protection, true shuffle, SponsorBlock, share-link cleaning,
